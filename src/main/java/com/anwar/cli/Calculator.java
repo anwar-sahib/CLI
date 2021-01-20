@@ -4,6 +4,7 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
@@ -16,6 +17,7 @@ public class Calculator {
     public static void main(String[] args) {
         try {
             simpleExample(args);
+            optionBuilderExample(args);
         } catch (ParseException ex) {
            System.err.println("Error parsing command:" + ex.getMessage());
         }
@@ -26,9 +28,9 @@ public class Calculator {
       // create Options object which holds all the options
       Options options = new Options();
       
-      options.addOption("a", "add", false, "add numbers");
+      options.addOption("a", "add", false, "Add n numbers");
       
-      options.addOption("m", "multiply", false, "multiply numbers");
+      options.addOption("m", "multiply", false, "Multiply n numbers");
       
       //***Parsing Stage***
       //Create a parser and parse the options passed as command line arguments
@@ -61,5 +63,26 @@ public class Calculator {
       }
       return multiplication;
    }
+   
+    private static void optionBuilderExample(String[] args) throws ParseException {
+        Options options = new Options();
+
+        options.addOption(Option.builder("s").longOpt("square").hasArg().argName("n").desc("Square given number").build());
+
+        //***Parsing Stage***
+        //Create a parser and parse the options passed as command line arguments
+        CommandLineParser parser = new DefaultParser();
+        CommandLine cmd = parser.parse(options, args);
+        
+        //***Interrogation Stage***
+      if(cmd.hasOption("s") || cmd.hasOption("square")) {
+          int number = Integer.parseInt(cmd.getOptionValue("s")); //Even for --square 5, it correctly extracts the argument value
+          System.out.println("Sum of the numbers: " + number * number);
+      } else {
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp("Option Builder", options);
+      }
+    }
+
 
 }
