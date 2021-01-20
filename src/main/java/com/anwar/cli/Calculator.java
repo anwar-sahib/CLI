@@ -3,6 +3,7 @@ package com.anwar.cli;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
@@ -25,7 +26,7 @@ public class Calculator {
       // create Options object which holds all the options
       Options options = new Options();
       
-      options.addOption("a", "add", true, "add numbers");
+      options.addOption("a", "add", false, "add numbers");
       
       options.addOption("m", "multiply", false, "multiply numbers");
       
@@ -39,6 +40,9 @@ public class Calculator {
          System.out.println("Sum of the numbers: " + getSum(args));
       } else if(cmd.hasOption("m") || cmd.hasOption("multiply")) {
          System.out.println("Multiplication of the numbers: " + getMultiplication(args));
+      } else {
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp("Simple Calculator", options);
       }
     }
     
